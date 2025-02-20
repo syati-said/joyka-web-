@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joyka College Application Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        form {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 0px 10px #ccc;
+            border-radius: 10px;
+        }
+        h2, h3 {
+            color: purple;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: orange;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: darkorange;
+        }
+    </style>
+</head>
+<body>
+
+<form id="applicationForm" action="https://formspree.io/f/xovjynkb" method="POST" enctype="multipart/form-data">
+    <h2>Joyka College Online Application Form</h2>
+
+    <label>Full Name:</label>
+    <input type="text" name="fullName" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" required>
+
+    <label>Phone Number:</label>
+    <input type="tel" name="phone" required>
+
+    <label>Alternative Phone Number:</label>
+    <input type="tel" name="altPhone">
+
+    <label>Date of Birth:</label>
+    <input type="date" name="dob" required>
+
+    <label>ID No / Birth Cert:</label>
+    <input type="text" name="idNumber" required>
+
+    <label>Selected Course:</label>
+    <select id="selectedCourse" name="selectedCourse" required onchange="toggleOtherCourse()">
+        <option value="">-- Select Course --</option>
+        <option value="Catering">Catering</option>
+        <option value="Cosmetology">Cosmetology</option>
+        <option value="ICT">ICT</option>
+        <option value="Fashion & Design">Fashion & Design</option>
+        <option value="Electrical Engineering">Electrical Engineering</option>
+        <option value="Plumbing">Plumbing</option>
+        <option value="Other">Other</option>
+    </select>
+
+    <input type="text" id="otherCourse" name="otherCourse" placeholder="Enter Course Name" style="display:none;">
+
+    <label>KCPE Marks:</label>
+    <input type="number" name="kcpeMarks" required>
+
+    <label>KCSE Marks:</label>
+    <input type="text" name="kcseMarks" required>
+
+    <label>County:</label>
+    <select name="county" id="county" required></select>
+
+    <h3>Parent/Guardian Details</h3>
+
+    <label>Father's Name:</label>
+    <input type="text" name="fatherName" required>
+
+    <label>Father's Phone:</label>
+    <input type="tel" name="fatherPhone" required>
+
+    <label>Father's Occupation:</label>
+    <input type="text" name="fatherOccupation">
+
+    <label>Mother's Name:</label>
+    <input type="text" name="motherName" required>
+
+    <label>Mother's Phone:</label>
+    <input type="tel" name="motherPhone" required>
+
+    <label>Mother's Occupation:</label>
+    <input type="text" name="motherOccupation">
+
+    <h3>Upload Documents</h3>
+
+    <label>Academic Documents (PDF only):</label>
+    <input type="file" name="academicDocs" accept=".pdf" required>
+
+    <label>Passport Photo (JPG/PNG only):</label>
+    <input type="file" name="passportPhoto" accept="image/png, image/jpeg" required>
+
+    <button type="submit">Submit Application</button>
+</form>
+
+<script>
+    // Kenyan counties
+    const counties = [
+        "Mombasa", "Kwale", "Kilifi", "Tana River", "Lamu", "Taita Taveta",
+        "Garissa", "Wajir", "Mandera", "Marsabit", "Isiolo", "Meru", "Tharaka Nithi",
+        "Embu", "Kitui", "Machakos", "Makueni", "Nyandarua", "Nyeri", "Kirinyaga",
+        "Murang'a", "Kiambu", "Turkana", "West Pokot", "Samburu", "Trans Nzoia",
+        "Uasin Gishu", "Elgeyo Marakwet", "Nandi", "Baringo", "Laikipia", "Nakuru",
+        "Narok", "Kajiado", "Kericho", "Bomet", "Kakamega", "Vihiga", "Bungoma",
+        "Busia", "Siaya", "Kisumu", "Homa Bay", "Migori", "Kisii", "Nyamira", "Nairobi"
+    ];
+
+    const countySelect = document.getElementById("county");
+    counties.forEach(county => {
+        let option = document.createElement("option");
+        option.value = county;
+        option.textContent = county;
+        countySelect.appendChild(option);
+    });
+
+    function toggleOtherCourse() {
+        const selectedCourse = document.getElementById("selectedCourse").value;
+        const otherCourseField = document.getElementById("otherCourse");
+
+        if (selectedCourse === "Other") {
+            otherCourseField.style.display = "block";
+            otherCourseField.required = true;
+        } else {
+            otherCourseField.style.display = "none";
+            otherCourseField.required = false;
+        }
+    }
+
+    document.getElementById("applicationForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        
+        try {
+            const response = await fetch("https://formspree.io/f/xovjynkb", {
+                method: "POST",
+                body: formData
+            });
+
+            if (response.ok) {
+                alert("Application submitted successfully!");
+                this.reset();
+            } else {
+                alert("Submission failed. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Error submitting form.");
+        }
+    });
+</script>
+
+</body>
+</html>
